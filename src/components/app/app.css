@@ -1,0 +1,84 @@
+body {
+  background: #f5f5f6;
+}
+
+.container {
+  max-width: 1144px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.filter-wrap {
+  width: 30%;
+  padding: 14px;
+  margin-top: 30px;
+}
+
+.frame {
+  width: 70%;
+  padding: 14px;
+  margin-top: 30px;
+}
+
+.favorites {
+  width: 773px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.favorites-content {
+  display: block;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Адаптация для десктопов среднего разрешения */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    flex-direction: row;
+    padding: 0 10px;
+  }
+
+  .filter-wrap {
+    width: 30%;
+    padding: 10px; /* Отступы внутри блока */
+    margin-top: 20px; /* Отступ сверху */
+  }
+
+  .frame {
+    width: 70%;
+    padding: 10px; /* Отступы внутри блока */
+    margin-top: 20px; /* Отступ сверху */
+  }
+}
+
+/* Адаптация для планшетов и небольших ноутбуков */
+@media (max-width: 992px) {
+  /*  .filter-wrap,
+  .frame {
+    padding: 10px;
+  } */
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .filter-wrap {
+    width: 100%;
+    order: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0px;
+  }
+
+  .frame {
+    width: 100%;
+    order: 2;
+    margin-top: 0;
+    padding: 0px;
+  }
+}
