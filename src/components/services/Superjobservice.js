@@ -7,11 +7,9 @@ export async function requestIndustryName(params) {
   let url = `${baseUrl}/${country}/categories?app_id=${appId}&app_key=${apiKey}`;
 
   try {
-    const response = await fetch(
-      url /* {
-        mode: 'no-cors'
-      } */
-    );
+    const response = await fetch(url, {
+      mode: "no-cors",
+    });
 
     if (!response.ok) {
       throw Error("Error!");
