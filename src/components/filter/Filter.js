@@ -126,28 +126,22 @@ function Filter() {
     >
       <div className="filter-heading">
         <h2 className="filter-title">Фильтры</h2>
-        <div>
+        {isMobile && (
           <Button
-            className="filter-reset-button"
-            variant="link"
-            onClick={handleResetFilters}
+            className="filter-collapse-button"
+            variant="subtle"
+            onClick={toggleCollapse}
           >
-            Сбросить всё
+            {isCollapsed ? <ChevronDown size={30} /> : <ChevronUp size={30} />}
           </Button>
-          {isMobile && (
-            <Button
-              className="filter-collapse-button"
-              variant="subtle"
-              onClick={toggleCollapse}
-            >
-              {isCollapsed ? (
-                <ChevronDown size={20} />
-              ) : (
-                <ChevronUp size={20} />
-              )}
-            </Button>
-          )}
-        </div>
+        )}
+        <Button
+          className="filter-reset-button"
+          variant="link"
+          onClick={handleResetFilters}
+        >
+          Сбросить всё
+        </Button>
       </div>
       {!isCollapsed && (
         <Box onSubmit={handleSubmit}>

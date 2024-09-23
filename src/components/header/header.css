@@ -74,6 +74,14 @@
   color: #5e96fc;
 }
 
+.mobile-burger {
+  display: none;
+}
+
+.mobile-drawer {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   .header {
     padding: 0 10px;
@@ -81,14 +89,26 @@
 }
 
 @media (max-width: 767px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-burger {
+    display: block;
+  }
+
+  .mobile-drawer {
+    display: block;
+  }
+
   .header {
-    flex-direction: column;
+    /* flex-direction: column; */
     height: auto;
     padding: 20px 10px;
   }
 
   .header-logo {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
 
   .header-nav {

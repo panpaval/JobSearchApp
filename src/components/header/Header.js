@@ -1,4 +1,94 @@
+import { useState, useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { JobsContext } from "../app/App";
+import logoImage from "./Logo.svg";
+import { Burger, Drawer, Stack } from "@mantine/core";
 import "./header.css";
+
+const Header = () => {
+  const { activeLink, setActiveLink } = useContext(JobsContext);
+  const location = useLocation();
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    if (currentPath === "/") {
+      setActiveLink("search");
+    } else if (currentPath === "/favorites") {
+      setActiveLink("favorites");
+    }
+  }, [location.pathname, setActiveLink]);
+
+  const handleClick = (link) => {
+    setActiveLink(link);
+    setOpened(false);
+  };
+
+  const NavLinks = () => (
+    <>
+      <Link
+        to="/"
+        className={`header-link ${activeLink === "search" ? "active" : ""}`}
+        onClick={() => handleClick("search")}
+      >
+        Поиск вакансий
+      </Link>
+      <Link
+        to="/favorites"
+        className={`header-link ${activeLink === "favorites" ? "active" : ""}`}
+        onClick={() => handleClick("favorites")}
+      >
+        Избранное
+      </Link>
+    </>
+  );
+
+  return (
+    <div className="container-header">
+      <header className="header">
+        <div className="header-logo">
+          <Link
+            className="logo-link"
+            to="/"
+            onClick={() => handleClick("search")}
+          >
+            <img src={logoImage} alt="Logo" className="logo-image" />
+            <div className="logo-text">JobForDubel</div>
+          </Link>
+        </div>
+
+        <nav className="header-nav desktop-nav">
+          <NavLinks />
+        </nav>
+
+        <Burger
+          opened={opened}
+          onClick={() => setOpened((o) => !o)}
+          className="mobile-burger"
+          size="lg"
+        />
+
+        <Drawer
+          opened={opened}
+          onClose={() => setOpened(false)}
+          size="100%"
+          padding="md"
+          title="Меню"
+          className="mobile-drawer"
+          position="left"
+        >
+          <Stack>
+            <NavLinks />
+          </Stack>
+        </Drawer>
+      </header>
+    </div>
+  );
+};
+
+export default Header;
+
+/* import "./header.css";
 import { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { JobsContext } from "../app/App";
@@ -63,3 +153,4 @@ const Header = () => {
 };
 
 export default Header;
+ */
