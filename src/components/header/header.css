@@ -82,6 +82,10 @@
   display: none;
 }
 
+.mobile-search-icon {
+  display: none;
+} /* мобильная строка поиска  */
+
 @media (max-width: 1200px) {
   .header {
     padding: 0 10px;
@@ -92,6 +96,11 @@
   .desktop-nav {
     display: none;
   }
+
+  .mobile-search-icon {
+    display: block;
+    cursor: pointer;
+  } /* мобильная строка поиска */
 
   .mobile-burger {
     display: block;

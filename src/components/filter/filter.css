@@ -7,8 +7,9 @@
 
 .filter-heading {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin-bottom: 32px;
+  align-items: center;
 }
 
 .filter-title {
@@ -29,6 +30,7 @@
   line-height: 20px;
   padding-left: 0;
   /* height: 0%; */
+  margin-left: auto;
 }
 
 .filter-submit-button {
@@ -87,5 +89,6 @@
 @media (max-width: 767px) {
   .filter-collapse-button {
     display: inline-flex;
+    padding-left: 0;
   }
 }

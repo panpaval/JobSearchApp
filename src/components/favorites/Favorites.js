@@ -40,11 +40,9 @@ const FavoritesList = () => {
     <div>
       {favorites.length > 0 ? (
         <>
-          <ul>
+          <ul style={{ paddingLeft: 0 }}>
             {currentItems.map((job) => (
               <div key={job.id} className="item favorites-item">
-                {" "}
-                {/* перенесли кей из айтема в обёртку */}
                 <Item data={job} onClick={() => handleItemClick(job)} />
               </div>
             ))}
@@ -54,10 +52,7 @@ const FavoritesList = () => {
             onChange={handlePageChange}
             total={totalPages}
             style={{
-              position: "fixed",
-              bottom: "30px",
-              left: "50%",
-              transform: "translateX(-50%)",
+              justifyContent: "center",
             }}
           />
         </>

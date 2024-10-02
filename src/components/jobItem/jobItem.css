@@ -1,72 +1,70 @@
-.activeStar .star-icon{
-    stroke: #5E96FC;
-    fill:  #5E96FC;
-    cursor: pointer;
+.activeStar .star-icon {
+  stroke: #5e96fc;
+  fill: #5e96fc;
+  cursor: pointer;
 }
 
 /* .activeStar .icon-tabler-star{
     fill: #5E96FC;
 }  */
 
-.star .star-icon{ 
-    stroke: #ACADB9;
-    fill:transparent;
-    cursor: pointer;
+.star .star-icon {
+  stroke: #acadb9;
+  fill: transparent;
+  cursor: pointer;
 }
 
 @keyframes shake {
-    0%, 100% {
-      transform: rotate(-10deg);
-    }
-    50% {
-      transform: rotate(15deg);
-      transform: scale(1.6);
-      transition: transform 0.3s ease-in-out;
-    }
-    
+  0%,
+  100% {
+    transform: rotate(-10deg);
   }
-  
-  .star-icon:hover {
-    animation: shake 0.8s infinite;
+  50% {
+    transform: rotate(15deg);
+    transform: scale(1.6);
+    transition: transform 0.3s ease-in-out;
   }
+}
 
-  .item-container {
+.star-icon:hover {
+  animation: shake 0.8s infinite;
+}
+
+.item-container {
   padding: 24px;
   margin-top: 16px;
   background-color: white;
   border-radius: 10px;
-  /* min-height: 101px; */
+  min-height: 101px;
   transition: background-color 0.3s ease; /* Для эффекта наведения */
 }
 
 .item-container:hover {
-    background-color: rgba(238, 232, 170, 0.15);
+  background-color: rgba(238, 232, 170, 0.15);
 }
 
 .job-info {
   display: flex;
   justify-content: space-between;
-  
 }
 
 .job-title {
-    
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    cursor: pointer;
-  }
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  cursor: pointer;
+}
 
-.payment-wrapper{
-    display: flex;
-    padding-top: 12.5px;
-    padding-bottom: 12.5px;
+.payment-wrapper {
+  display: flex;
+  padding-top: 12.5px;
+  padding-bottom: 12.5px;
 }
 
 .payment-info {
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
@@ -75,32 +73,32 @@
 .separator {
   text-align: center;
   font-size: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
   padding-left: 12px;
   padding-right: 12px;
-  color: #ACADB9;
+  color: #acadb9;
 }
 
 .type-of-work {
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
-.town-wrapper{
-    display: flex;
-    padding-right: 4px;
+.town-wrapper {
+  display: flex;
+  padding-right: 4px;
 }
 
 .town-info {
   font-size: 16px;
   padding-left: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

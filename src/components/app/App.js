@@ -19,6 +19,8 @@ const initialFilters = {
 };
 
 function App() {
+  const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false); //
+
   const [data, setData] = useState([]);
   const [pageForRequest, setPageForRequest] = useState(1);
   const [keyword, setKeyword] = useState("");
@@ -38,6 +40,8 @@ function App() {
     <Router>
       <JobsContext.Provider
         value={{
+          isMobileSearchVisible, //
+          setIsMobileSearchVisible, //
           firstRequest,
           isJobDescriptionPage,
           setIsJobDescriptionPage,
@@ -76,11 +80,18 @@ function App() {
                   path="/"
                   element={
                     <>
+                      <div className="mobile-search">
+                        {" "}
+                        {/* переносим поиск над фильтрами */}
+                        <SearchPanel />
+                      </div>
                       <div className="filter-wrap">
                         <Filter />
                       </div>
                       <div className="frame">
-                        <SearchPanel />
+                        <div className="desktop-search">
+                          <SearchPanel />
+                        </div>
                         <JobList />
                       </div>
                     </>

@@ -3,10 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { JobsContext } from "../app/App";
 import logoImage from "./Logo.svg";
 import { Burger, Drawer, Stack } from "@mantine/core";
+import { Search } from "tabler-icons-react";
 import "./header.css";
 
 const Header = () => {
-  const { activeLink, setActiveLink } = useContext(JobsContext);
+  const { activeLink, setActiveLink, setIsMobileSearchVisible } =
+    useContext(JobsContext);
   const location = useLocation();
   const [opened, setOpened] = useState(false);
 
@@ -23,6 +25,10 @@ const Header = () => {
     setActiveLink(link);
     setOpened(false);
   };
+
+  const handleSearchIconClick = () => {
+    setIsMobileSearchVisible((prev) => !prev);
+  }; //тоглим строку поиска
 
   const NavLinks = () => (
     <>
@@ -56,18 +62,19 @@ const Header = () => {
             <div className="logo-text">JobForDubel</div>
           </Link>
         </div>
-
+        <div className="mobile-search-icon">
+          <Search size={24} onClick={handleSearchIconClick} />
+        </div>{" "}
+        {/* иконка лупы */}
         <nav className="header-nav desktop-nav">
           <NavLinks />
         </nav>
-
         <Burger
           opened={opened}
           onClick={() => setOpened((o) => !o)}
           className="mobile-burger"
           size="lg"
         />
-
         <Drawer
           opened={opened}
           onClose={() => setOpened(false)}

@@ -9,7 +9,7 @@ function Item({ data, onClick }) {
     useContext(JobsContext);
   const textColor = isJobDescriptionPage ? "black" : "#5E96FC";
   const fontSize = isJobDescriptionPage ? "28px" : "20px";
-  const itemHight = isJobDescriptionPage ? "120px" : "101px";
+  /* const itemHeight = isJobDescriptionPage ? "120px" : "101px"; */
 
   const isActiveStar = favorites.some((item) => item.id === data.id);
 
@@ -76,7 +76,7 @@ function Item({ data, onClick }) {
     <div
       className="item-container"
       onClick={onClick}
-      style={{ height: itemHight }}
+      style={{ height: "auto" }}
     >
       <div className="job-info">
         <div

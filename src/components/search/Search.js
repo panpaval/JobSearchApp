@@ -15,6 +15,7 @@ function SearchPanel() {
     setPageForRequest,
     setFilters,
     initialFilters,
+    isMobileSearchVisible, // для мобильного поиска
   } = useContext(JobsContext);
 
   const handleChange = (event) => {
@@ -41,6 +42,12 @@ function SearchPanel() {
       handleSearch();
     }
   };
+  // для отображения мобильной версии
+  const isMobile = window.innerWidth <= 767;
+
+  if (isMobile && !isMobileSearchVisible) {
+    return null;
+  }
 
   return (
     <Input.Wrapper className="inputWrapper">
