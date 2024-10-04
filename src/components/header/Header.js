@@ -4,10 +4,11 @@ import { JobsContext } from "../app/App";
 import logoImage from "./Logo.svg";
 import { Burger, Drawer, Stack } from "@mantine/core";
 import { Search } from "tabler-icons-react";
+import ReactCountryFlag from "react-country-flag";
 import "./header.css";
 
 const Header = () => {
-  const { activeLink, setActiveLink, setIsMobileSearchVisible } =
+  const { activeLink, setActiveLink, setIsMobileSearchVisible, filters } =
     useContext(JobsContext);
   const location = useLocation();
   const [opened, setOpened] = useState(false);
@@ -29,6 +30,8 @@ const Header = () => {
   const handleSearchIconClick = () => {
     setIsMobileSearchVisible((prev) => !prev);
   }; //тоглим строку поиска
+
+  const countryCode = filters.country.toUpperCase();
 
   const NavLinks = () => (
     <>
@@ -58,7 +61,16 @@ const Header = () => {
             to="/"
             onClick={() => handleClick("search")}
           >
-            <img src={logoImage} alt="Logo" className="logo-image" />
+            {/* <img src={logoImage} alt="Logo" className="logo-image" /> */}
+            <ReactCountryFlag
+              countryCode={countryCode}
+              svg
+              style={{
+                width: "3em",
+                height: "2em",
+              }}
+              title={countryCode}
+            />
             <div className="logo-text">JobForDubel</div>
           </Link>
         </div>

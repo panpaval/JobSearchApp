@@ -69,7 +69,7 @@ function Item({ data, onClick }) {
   };
 
   const currency = getCurrencyByCountry(data.country);
-  console.log("CountryName", data.country);
+
   const currencySymbol = getSymbolFromCurrency(currency);
 
   return (

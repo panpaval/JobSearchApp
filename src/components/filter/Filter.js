@@ -117,7 +117,7 @@ function Filter() {
 
     setFilters((prevFilters) => ({ ...prevFilters, [field]: value }));
   };
-  console.log("filters", filters);
+
   return (
     <div
       className={`filter-container ${

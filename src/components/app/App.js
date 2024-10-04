@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../header/Header";
 import SearchPanel from "../search/Search";
 import Filter from "../filter/Filter";
@@ -20,7 +20,7 @@ const initialFilters = {
 
 function App() {
   const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false); //
-
+  console.log("тоглим строку поиска", isMobileSearchVisible);
   const [data, setData] = useState([]);
   const [pageForRequest, setPageForRequest] = useState(1);
   const [keyword, setKeyword] = useState("");
@@ -32,7 +32,15 @@ function App() {
   const [filters, setFilters] = useState(initialFilters);
   const [firstRequest, setFirstRequest] = useState([]); //первая порция данных по инициализирующему запросу для списка. Используется при клике на "сбросить всё"
   const [selectedJobId, setSelectedJobId] = useState(null); //для JobDescription
-  const [favorites, setFavorites] = useState([]);
+  /* const [favorites, setFavorites] = useState([]); */
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
   const [activeLink, setActiveLink] = useState("search"); //для активных ссылок в хедере
   const [isJobDescriptionPage, setIsJobDescriptionPage] = useState(false); //для цвета шрифта названия вакансии внутри JobDescription
 
@@ -100,7 +108,7 @@ function App() {
                 <Route
                   path="/favorites"
                   element={
-                    <div className="container favorites">
+                    <div className=" favorites">
                       <div className="favorites-content">
                         <FavoritesList />
                       </div>

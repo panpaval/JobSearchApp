@@ -37,7 +37,7 @@ const JobList = () => {
         setLoadingMore(true);
         const response = await request();
         setPageForRequest(2);
-        console.log("initialazed request", response.results);
+
         setData(response.results);
         setFirstRequest(response.results);
         setLoadingMore(false);
@@ -79,7 +79,6 @@ const JobList = () => {
       redirect_url,
     };
   });
-  console.log("FILTERED DATA", filteredData);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;

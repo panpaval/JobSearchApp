@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { JobsContext } from "../app/App";
 import { Input, Button } from "@mantine/core";
 import "./search.css";
@@ -6,6 +6,8 @@ import { Search } from "tabler-icons-react";
 import { request } from "../services/Superjobservice";
 
 function SearchPanel() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+
   const {
     setData,
     keyword,
@@ -42,8 +44,24 @@ function SearchPanel() {
       handleSearch();
     }
   };
+
   // для отображения мобильной версии
-  const isMobile = window.innerWidth <= 767;
+  /*   const isMobile = window.innerWidth <= 767; */
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Очистка слушателя при размонтировании компонента
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log("проверка на ширину экрана", isMobile);
 
   if (isMobile && !isMobileSearchVisible) {
     return null;
