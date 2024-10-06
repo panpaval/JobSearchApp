@@ -55,30 +55,32 @@ const JobList = () => {
   const filteredData = data.map((item) => {
     const {
       id,
-      title: profession,
-      location: { display_name: town, area: locationArea },
-      contract_time: type_of_work,
-      salary_min: payment_from,
-      salary_max: payment_to,
+      title,
+      location,
+      contract_time,
+      salary_min,
+      salary_max,
       description,
       redirect_url,
     } = item;
 
     const country =
-      locationArea && locationArea.length > 0 ? locationArea[0] : null;
+      location.area && location.area.length > 0 ? location.area[0] : null;
 
     return {
       id,
-      profession,
-      town,
+      title,
+      location,
       country,
-      type_of_work,
-      payment_from,
-      payment_to,
+      contract_time,
+      salary_min,
+      salary_max,
       description,
       redirect_url,
     };
   });
+
+  console.log("DATA FROM LIST", filteredData);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -117,7 +119,7 @@ const JobList = () => {
     const selectedJob = filteredData.find((item) => item.id === id);
     setSelectedJobId(selectedJob);
     console.log("selectedJobId", selectedJobId);
-    navigate(`/job/${id}`, { state: selectedJob });
+    navigate(`/job/${filters.country}/${id}`, { state: selectedJob });
   };
 
   // Управление пагинацией с клавиатуры

@@ -13,6 +13,15 @@ const Header = () => {
   const location = useLocation();
   const [opened, setOpened] = useState(false);
 
+  // Функция для извлечения кода страны из URL
+  const getCountryFromUrl = () => {
+    const pathParts = location.pathname.split("/");
+    if (pathParts[1] === "job" && pathParts[2]) {
+      return pathParts[2];
+    }
+    return null;
+  };
+
   useEffect(() => {
     const currentPath = location.pathname;
     if (currentPath === "/") {
@@ -31,7 +40,13 @@ const Header = () => {
     setIsMobileSearchVisible((prev) => !prev);
   }; //тоглим строку поиска
 
-  const countryCode = filters.country.toUpperCase();
+  const countryCode = (
+    getCountryFromUrl() ||
+    filters.country ||
+    "us"
+  ).toUpperCase();
+
+  console.log("HEADERcountry", countryCode);
 
   const NavLinks = () => (
     <>

@@ -4,10 +4,16 @@ import Header from "../header/Header";
 import SearchPanel from "../search/Search";
 import Filter from "../filter/Filter";
 import JobList from "../jobList/JobList";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+/* import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; */
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./app.css";
 import FavoritesList from "../favorites/Favorites";
-import JobDescription from "../jobdescription/jobdescription";
+import JobDescription from "../jobdescription/jobdescription.js";
 
 export const JobsContext = React.createContext();
 
@@ -30,6 +36,14 @@ function App() {
   const [usedPages, setUsedPages] = useState(0); //Использованые станицы для запросов на сервер
 
   const [filters, setFilters] = useState(initialFilters);
+  /*   const [filters, setFilters] = useState(() => {
+    const savedFilters = localStorage.getItem("filters");
+    return savedFilters ? JSON.parse(savedFilters) : initialFilters;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("filters", JSON.stringify(filters));
+  }, [filters]); */
   const [firstRequest, setFirstRequest] = useState([]); //первая порция данных по инициализирующему запросу для списка. Используется при клике на "сбросить всё"
   const [selectedJobId, setSelectedJobId] = useState(null); //для JobDescription
   /* const [favorites, setFavorites] = useState([]); */
@@ -89,8 +103,6 @@ function App() {
                   element={
                     <>
                       <div className="mobile-search">
-                        {" "}
-                        {/* переносим поиск над фильтрами */}
                         <SearchPanel />
                       </div>
                       <div className="filter-wrap">
@@ -116,7 +128,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/job/:id"
+                  path="/job/:country/:id"
                   element={
                     <div className="container favorites">
                       <div>
@@ -125,6 +137,8 @@ function App() {
                     </div>
                   }
                 />
+                <Route path="*" element={<Navigate to="/" replace />} />
+                {/* добавил для исправления бага */}
               </Routes>
             </div>
           </div>
@@ -135,3 +149,44 @@ function App() {
 }
 
 export default App;
+
+/* 
+<div className="content-wrap">
+          <Header />
+          <div className="main">
+            <div className="container">
+              <Routes>
+                <Route path="/" element={
+                  <>
+                   <div className="mobile-search">
+                        <SearchPanel />
+                      </div>
+                    <div className="filter-wrap">
+                      <Filter />
+                    </div>
+                    <div className="desktop-search">
+                      <SearchPanel />
+                      <JobList />
+                    </div>
+                  </>
+                } />
+                <Route path="/favorites" element={
+                  <div className=" favorites">
+                    <div className="favorites-content">
+                      <FavoritesList />
+                    </div>
+                  </div>
+                } />
+                <Route path="/job/:id" element={
+                  <div className="container favorites">
+                    <div>
+                      <JobDescription />
+                    </div>
+                  </div>
+                } />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </div>
+          </div>
+        </div>
+      </JobsContext.Provider> */

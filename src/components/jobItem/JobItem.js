@@ -83,7 +83,7 @@ function Item({ data, onClick }) {
           className="job-title"
           style={{ color: textColor, fontSize: fontSize }}
         >
-          {data.profession}
+          {data.title}
         </div>
         <div
           className={isActiveStar ? "activeStar" : "star"}
@@ -105,20 +105,22 @@ function Item({ data, onClick }) {
       </div>
       <div className="payment-wrapper">
         <div className="payment-info">
-          {data.payment_from ? (
+          {data.salary_min ? (
             <>
-              от {data.payment_from} {currencySymbol}
+              от {data.salary_min} {currencySymbol}
             </>
           ) : (
             "Нет данных о ЗП"
           )}
         </div>
         <div className="separator">•</div>
-        <div className="type-of-work">{data.type_of_work}</div>
+        <div className="type-of-work">{data.contract_time}</div>
       </div>
       <div className="town-wrapper">
         <img src={locationImage} alt="Logo" />
-        <div className="town-info">{data.town}</div>
+        <div className="town-info">
+          {data.location?.display_name || "Локация не указана"}
+        </div>
       </div>
     </div>
   );
