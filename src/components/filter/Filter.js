@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { JobsContext } from "../app/App";
-import { Button, Select, NumberInput, Box } from "@mantine/core";
+import { Button, Select, NumberInput, Box, Text } from "@mantine/core";
 import "./filter.css";
 import { ChevronDown, ChevronUp } from "tabler-icons-react";
 import { useFetchIndustries } from "./filterHook";
@@ -16,21 +16,14 @@ function Filter() {
     keyword,
     setPageForRequest,
     initialFilters,
-    filters,
     setFilters,
     firstRequest,
     setSelectedJobId,
   } = useContext(JobsContext);
 
-  /*   const localFilters = {
-    industry: "",
-    salaryMin: "",
-    salaryMax: "",
-    country: "us",
-  }; */
-
   const [localFilters, setLocalFilters] = useState(initialFilters);
-
+  const [salaryError, setSalaryError] =
+    useState(""); /* добавлено для обработки неправильной зп в фильтрах */
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -80,7 +73,17 @@ function Filter() {
     label: item.label,
   }));
 
-  const handleSubmit = async () => {
+  // Функция валидации зарплаты /* добавлено для обработки неправильной зп в фильтрах */
+  const validateSalary = (min, max) => {
+    if (min && max && Number(min) > Number(max)) {
+      setSalaryError("Минимальная зарплата не может быть больше максимальной");
+      return false;
+    }
+    setSalaryError("");
+    return true;
+  };
+
+  /*   const handleSubmit = async () => {
     setPageForRequest(2);
 
     let data;
@@ -107,6 +110,42 @@ function Filter() {
       setCurrentPage(1);
     }
     console.log("CATEGORY", localFilters.industry);
+  }; */
+
+  const handleSubmit = async () => {
+    /* добавлено для обработки неправильной зп в фильтрах */
+    if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
+      return;
+    }
+
+    setPageForRequest(2);
+
+    let data;
+
+    if (localFilters.industry) {
+      setKeyword("");
+      setCurrentPage(1);
+    }
+
+    if (
+      localFilters.industry ||
+      localFilters.country ||
+      localFilters.salaryMin ||
+      localFilters.salaryMax > 0
+    ) {
+      setLoadingMore(true);
+      try {
+        data = await request(localFilters, keyword);
+        setData(data.results);
+        setFilters(localFilters);
+        setLoadedPages([]);
+        setCurrentPage(1);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoadingMore(false);
+      }
+    }
   };
 
   const handleResetFilters = () => {
@@ -121,12 +160,26 @@ function Filter() {
     setSelectedJobId(null);
   };
 
-  const handleFilterChange = (field, value) => {
+  /*   const handleFilterChange = (field, value) => {
     if (value < 0) {
       value = 0;
     }
 
     setLocalFilters((prevFilters) => ({ ...prevFilters, [field]: value }));
+  }; */
+
+  const handleFilterChange = (field, value) => {
+    /* добавлено для обработки неправильной зп в фильтрах */
+    if (value < 0) {
+      value = 0;
+    }
+
+    const newFilters = { ...localFilters, [field]: value };
+    setLocalFilters(newFilters);
+
+    if (field === "salaryMin" || field === "salaryMax") {
+      validateSalary(newFilters.salaryMin, newFilters.salaryMax);
+    }
   };
 
   return (
@@ -224,7 +277,10 @@ function Filter() {
             }
             defaultChecked={33333}
             value={localFilters.salaryMin}
-            onChange={(value) => handleFilterChange("salaryMin", value)}
+            onChange={(value) =>
+              handleFilterChange("salaryMin", value)
+            } /* добавлено для обработки неправильной зп в фильтрах */
+            /* error={salaryError} */
           />
           <NumberInput
             size="md"
@@ -257,13 +313,20 @@ function Filter() {
               </div>
             }
             value={localFilters.salaryMax}
-            onChange={(value) => handleFilterChange("salaryMax", value)}
+            onChange={(value) =>
+              handleFilterChange("salaryMax", value)
+            } /* добавлено для обработки неправильной зп в фильтрах */
+            /* error={salaryError} */
           />
+          {salaryError && <Text color="red">{salaryError}</Text>}
           <Button
             onClick={handleSubmit}
             className="filter-submit-button"
             type="submit"
             variant="filled"
+            disabled={
+              !!salaryError
+            } /* добавлено для обработки неправильной зп в фильтрах */
           >
             Применить
           </Button>
