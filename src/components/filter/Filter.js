@@ -319,17 +319,16 @@ function Filter() {
             /* error={salaryError} */
           />
           {salaryError && <Text color="red">{salaryError}</Text>}
-          <Button
-            onClick={handleSubmit}
-            className="filter-submit-button"
-            type="submit"
-            variant="filled"
-            disabled={
-              !!salaryError
-            } /* добавлено для обработки неправильной зп в фильтрах */
-          >
-            Применить
-          </Button>
+          {!salaryError && (
+            <Button
+              onClick={handleSubmit}
+              className="filter-submit-button"
+              type="submit"
+              variant="filled"
+            >
+              Применить
+            </Button>
+          )}
         </Box>
       )}
     </div>
