@@ -22,6 +22,15 @@ function Filter() {
     setSelectedJobId,
   } = useContext(JobsContext);
 
+  /*   const localFilters = {
+    industry: "",
+    salaryMin: "",
+    salaryMax: "",
+    country: "us",
+  }; */
+
+  const [localFilters, setLocalFilters] = useState(initialFilters);
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -76,32 +85,34 @@ function Filter() {
 
     let data;
 
-    if (filters.industry) {
+    if (localFilters.industry) {
       setKeyword("");
       setCurrentPage(1);
     }
 
     if (
-      filters.industry ||
-      filters.country ||
-      filters.salaryMin ||
-      filters.salaryMax > 0
+      localFilters.industry ||
+      localFilters.country ||
+      localFilters.salaryMin ||
+      localFilters.salaryMax > 0
     ) {
       setLoadingMore(true);
-      data = await request(filters, keyword);
+      data = await request(localFilters, keyword);
 
       setData(data.results);
       console.log("data", data.results);
+      setFilters(localFilters);
       setLoadedPages([]);
       setLoadingMore(false);
       setCurrentPage(1);
     }
-    console.log("CATEGORY", filters.industry);
+    console.log("CATEGORY", localFilters.industry);
   };
 
   const handleResetFilters = () => {
     setData(firstRequest);
     setFilters(initialFilters);
+    setLocalFilters(initialFilters);
     setLoadedPages([]);
     setKeyword("");
     setCurrentPage(1);
@@ -115,7 +126,7 @@ function Filter() {
       value = 0;
     }
 
-    setFilters((prevFilters) => ({ ...prevFilters, [field]: value }));
+    setLocalFilters((prevFilters) => ({ ...prevFilters, [field]: value }));
   };
 
   return (
@@ -159,7 +170,7 @@ function Filter() {
             }}
             data={options}
             placeholder="Выберите отрасль"
-            value={filters.industry}
+            value={localFilters.industry}
             onChange={(value) => handleFilterChange("industry", value)}
           />
 
@@ -177,7 +188,7 @@ function Filter() {
             }}
             data={countryOptions}
             placeholder="Выберите страну"
-            value={filters.country}
+            value={localFilters.country}
             onChange={(value) => handleFilterChange("country", value)}
           />
           <h2 className="filter-salary">Оклад</h2>
@@ -193,7 +204,7 @@ function Filter() {
                   onClick={() =>
                     handleFilterChange(
                       "salaryMin",
-                      Number(filters.salaryMin) + 5000
+                      Number(localFilters.salaryMin) + 5000
                     )
                   }
                 >
@@ -203,7 +214,7 @@ function Filter() {
                   onClick={() =>
                     handleFilterChange(
                       "salaryMin",
-                      Number(filters.salaryMin) - 5000
+                      Number(localFilters.salaryMin) - 5000
                     )
                   }
                 >
@@ -212,7 +223,7 @@ function Filter() {
               </div>
             }
             defaultChecked={33333}
-            value={filters.salaryMin}
+            value={localFilters.salaryMin}
             onChange={(value) => handleFilterChange("salaryMin", value)}
           />
           <NumberInput
@@ -227,7 +238,7 @@ function Filter() {
                   onClick={() =>
                     handleFilterChange(
                       "salaryMax",
-                      Number(filters.salaryMax) + 5000
+                      Number(localFilters.salaryMax) + 5000
                     )
                   }
                 >
@@ -237,7 +248,7 @@ function Filter() {
                   onClick={() =>
                     handleFilterChange(
                       "salaryMax",
-                      Number(filters.salaryMax) - 5000
+                      Number(localFilters.salaryMax) - 5000
                     )
                   }
                 >
@@ -245,7 +256,7 @@ function Filter() {
                 </div>
               </div>
             }
-            value={filters.salaryMax}
+            value={localFilters.salaryMax}
             onChange={(value) => handleFilterChange("salaryMax", value)}
           />
           <Button
