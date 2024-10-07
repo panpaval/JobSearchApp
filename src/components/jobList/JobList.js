@@ -155,7 +155,7 @@ const JobList = () => {
                   marginLeft: "auto",
                   marginRight: "auto",
                   width: "fit-content",
-                  paddingTop: "40px",
+                  paddingTop: "30px",
                 }}
               />
             </div>
