@@ -6,11 +6,11 @@ import "./jobList.css";
 /* import frameImage from "./Frame.svg"; */
 import { JobsContext } from "../app/App";
 import { request } from "../services/Superjobservice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const JobList = () => {
   const navigate = useNavigate();
-
+  const [searchParams] = useSearchParams();
   const itemsPerPage = 4;
 
   const {
@@ -35,6 +35,44 @@ const JobList = () => {
     const fetchData = async () => {
       try {
         setLoadingMore(true);
+
+        // Получаем параметры из URL
+        const urlFilters = {
+          industry: searchParams.get("industry") || "",
+          salaryMin: searchParams.get("salaryMin")
+            ? Number(searchParams.get("salaryMin"))
+            : "",
+          salaryMax: searchParams.get("salaryMax")
+            ? Number(searchParams.get("salaryMax"))
+            : "",
+          country: searchParams.get("country") || "us",
+        };
+
+        // Используем параметры из URL для запроса
+        const response = await request(urlFilters);
+        setPageForRequest(2);
+
+        setData(response.results);
+        setFirstRequest(response.results);
+        setLoadingMore(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoadingMore(false);
+      }
+    };
+
+    /* // Запускаем fetchData при первой загрузке или при изменении URL параметров
+    fetchData(); */
+
+    if (data.length === 0) {
+      fetchData();
+    }
+  }, []);
+
+  /*   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoadingMore(true);
         const response = await request();
         setPageForRequest(2);
 
@@ -50,7 +88,7 @@ const JobList = () => {
     if (data.length === 0) {
       fetchData();
     }
-  }, [data]);
+  }, [data]); */
 
   const filteredData = data.map((item) => {
     const {
@@ -163,38 +201,6 @@ const JobList = () => {
         )}
       </>
     </div>
-
-    /* <div onKeyDown={handleKeyDown} tabIndex={0}>
-      <>
-        {loadingMore ? (
-          <SkeletonForJobList />
-        ) : (
-          <>
-            {limitedData.map((item) => (
-              <Item
-                key={item.id}
-                data={item}
-                onClick={() => handleClickToJobDescription(item.id)}
-              />
-            ))}
-
-            <div>
-              <Pagination
-                total={totalPages}
-                value={currentPage}
-                onChange={handlePaginationChange}
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  width: "fit-content",
-                  paddingTop: "40px",
-                }}
-              />
-            </div>
-          </>
-        )}
-      </>
-    </div> */
   );
 };
 

@@ -6,10 +6,11 @@ import { JobsContext } from "../app/App";
 import { getJobById } from "../services/Superjobservice";
 import { Button } from "@mantine/core";
 import SkeletonForJobList from "../skeleton/skeleton";
+import frameImage from "./Frame.svg";
 
 const JobDescription = () => {
   const { id, country } = useParams();
-  console.log("NEWcountry ", country);
+
   const navigate = useNavigate();
   const { setIsJobDescriptionPage } = useContext(JobsContext);
   const [job, setJob] = useState(null);
@@ -47,7 +48,18 @@ const JobDescription = () => {
       </div>
     ); */
   if (error) return <div>{error}</div>;
-  /*  if (!job) return <div>Job not found</div>; */
+  if (!job && !isLoading)
+    return (
+      <>
+        {/*   {" "}
+        <img
+          src={frameImage}
+          alt="Job not found or wrong ID"
+          className="image-centered"
+        /> */}
+        <div>Job not found or wrong ID</div>{" "}
+      </>
+    );
 
   return (
     <>

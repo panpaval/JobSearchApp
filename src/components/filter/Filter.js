@@ -16,12 +16,14 @@ function Filter() {
     keyword,
     setPageForRequest,
     initialFilters,
+    defaultFilters,
     setFilters,
     firstRequest,
     setSelectedJobId,
+    filters,
   } = useContext(JobsContext);
 
-  const [localFilters, setLocalFilters] = useState(initialFilters);
+  const [localFilters, setLocalFilters] = useState(filters);
   const [salaryError, setSalaryError] =
     useState(""); /* добавлено для обработки неправильной зп в фильтрах */
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -44,7 +46,7 @@ function Filter() {
     setIsCollapsed(!isCollapsed);
   };
 
-  const industriesData = useFetchIndustries();
+  const industriesData = useFetchIndustries(localFilters);
 
   const countryOptions = [
     { value: "gb", label: "United Kingdom" },
@@ -85,35 +87,6 @@ function Filter() {
     return true;
   };
 
-  /*   const handleSubmit = async () => {
-    setPageForRequest(2);
-
-    let data;
-
-    if (localFilters.industry) {
-      setKeyword("");
-      setCurrentPage(1);
-    }
-
-    if (
-      localFilters.industry ||
-      localFilters.country ||
-      localFilters.salaryMin ||
-      localFilters.salaryMax > 0
-    ) {
-      setLoadingMore(true);
-      data = await request(localFilters, keyword);
-
-      setData(data.results);
-      console.log("data", data.results);
-      setFilters(localFilters);
-      setLoadedPages([]);
-      setLoadingMore(false);
-      setCurrentPage(1);
-    }
-    console.log("CATEGORY", localFilters.industry);
-  }; */
-
   const handleSubmit = async () => {
     /* добавлено для обработки неправильной зп в фильтрах */
     if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
@@ -152,8 +125,8 @@ function Filter() {
 
   const handleResetFilters = () => {
     setData(firstRequest);
-    setFilters(initialFilters);
-    setLocalFilters(initialFilters);
+    setFilters(defaultFilters);
+    setLocalFilters(defaultFilters);
     setLoadedPages([]);
     setKeyword("");
     setCurrentPage(1);
@@ -161,14 +134,6 @@ function Filter() {
     setPageForRequest(1);
     setSelectedJobId(null);
   };
-
-  /*   const handleFilterChange = (field, value) => {
-    if (value < 0) {
-      value = 0;
-    }
-
-    setLocalFilters((prevFilters) => ({ ...prevFilters, [field]: value }));
-  }; */
 
   const handleFilterChange = (field, value) => {
     /* добавлено для обработки неправильной зп в фильтрах */
@@ -211,6 +176,24 @@ function Filter() {
       </div>
       {!isCollapsed && (
         <Box onSubmit={handleSubmit}>
+          <h2 className="filter-label">Страна</h2>
+          <Select
+            rightSection={
+              <ChevronDown color={"#ACADB9"} size={30} strokeWidth={1.5} />
+            }
+            styles={{ rightSection: { pointerEvents: "none" } }}
+            size="md"
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 200,
+              timingFunction: "ease",
+            }}
+            data={countryOptions}
+            placeholder="Выберите страну"
+            value={localFilters.country}
+            onChange={(value) => handleFilterChange("country", value)}
+          />
+
           <h2 className="filter-label">Отрасль</h2>
           <Select
             rightSection={
@@ -229,23 +212,6 @@ function Filter() {
             onChange={(value) => handleFilterChange("industry", value)}
           />
 
-          <h2 className="filter-label">Страна</h2>
-          <Select
-            rightSection={
-              <ChevronDown color={"#ACADB9"} size={30} strokeWidth={1.5} />
-            }
-            styles={{ rightSection: { pointerEvents: "none" } }}
-            size="md"
-            transitionProps={{
-              transition: "pop-top-left",
-              duration: 200,
-              timingFunction: "ease",
-            }}
-            data={countryOptions}
-            placeholder="Выберите страну"
-            value={localFilters.country}
-            onChange={(value) => handleFilterChange("country", value)}
-          />
           <h2 className="filter-salary">Оклад</h2>
           <NumberInput
             placeholder={"От"}
@@ -334,60 +300,7 @@ function Filter() {
         </Box>
       )}
     </div>
-
-    /* 
-    <div className="filter-container">
-      <div className="filter-heading">
-        <h2 className="filter-title">Фильтры</h2>
-        <Button
-          className="filter-reset-button"
-          variant="link"
-          onClick={handleResetFilters}
-        >
-          Сбросить всё
-        </Button>
-      </div> */
-
-    /* </div> */
   );
 }
 
 export default Filter;
-
-/*   const handleSubmit = async () => {
-    setPageForRequest(2);
-
-    let data;
-    const params = {
-      filters: {
-        category: filters.industry,
-        country: filters.country,
-        salary: {
-          min: filters.salaryMin,
-          max: filters.salaryMax,
-        },
-      },
-    };
-
-    if (params.filters.category || params.filters.country !== "us") {
-      setKeyword("");
-      setCurrentPage(1);
-    }
-
-    setParamsForJLRequest(params);
-    console.log("paramsJLRequest", params);
-
-    if (
-      params.filters.category ||
-      params.filters.country !== "us" ||
-      params.filters.salary.min ||
-      params.filters.salary.max > 0
-    ) {
-      setLoadingMore(true);
-      data = await request(params, keyword);
-      console.log("params", params);
-      setData(data.results);
-      setLoadedPages([]);
-      setLoadingMore(false);
-    }
-  }; */

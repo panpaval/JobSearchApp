@@ -1,5 +1,10 @@
 import { useState, useContext, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { JobsContext } from "../app/App";
 import logoImage from "./Logo.svg";
 import { Burger, Drawer, Stack } from "@mantine/core";
@@ -8,9 +13,16 @@ import ReactCountryFlag from "react-country-flag";
 import "./header.css";
 
 const Header = () => {
-  const { activeLink, setActiveLink, setIsMobileSearchVisible, filters } =
-    useContext(JobsContext);
+  const {
+    activeLink,
+    setActiveLink,
+    setIsMobileSearchVisible,
+    filters,
+    setFilters,
+  } = useContext(JobsContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [opened, setOpened] = useState(false);
 
   // Функция для извлечения кода страны из URL
@@ -31,9 +43,45 @@ const Header = () => {
     }
   }, [location.pathname, setActiveLink]);
 
+  /*   const handleClick = (link) => {
+    setActiveLink(link);
+    setOpened(false);
+  }; */
+  /* 
+  const handleClick = (link) => {
+    setActiveLink(link);
+
+    setOpened(false);
+
+    if (link === "search") {
+      const currentParams = Object.fromEntries([...searchParams]);
+
+      console.log("SearchPARAMS", currentParams);
+
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ...currentParams,
+      }));
+
+      navigate("/");
+    } else if (link === "favorites") {
+      navigate("/favorites");
+    }
+  }; */
+
   const handleClick = (link) => {
     setActiveLink(link);
     setOpened(false);
+
+    if (link === "search") {
+      const savedFilters = JSON.parse(
+        sessionStorage.getItem("filters") || "{}"
+      );
+      setFilters(savedFilters);
+      navigate("/");
+    } else if (link === "favorites") {
+      navigate("/favorites");
+    }
   };
 
   const handleSearchIconClick = () => {
@@ -45,8 +93,6 @@ const Header = () => {
     filters.country ||
     "us"
   ).toUpperCase();
-
-  console.log("HEADERcountry", countryCode);
 
   const NavLinks = () => (
     <>

@@ -61,8 +61,6 @@ function SearchPanel() {
     };
   }, []);
 
-  console.log("проверка на ширину экрана", isMobile);
-
   if (isMobile && !isMobileSearchVisible) {
     return null;
   }

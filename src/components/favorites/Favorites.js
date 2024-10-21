@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const FavoritesList = () => {
-  const { favorites, setActiveLink } = useContext(JobsContext);
+  const { favorites, setActiveLink, setSelectedJobId } =
+    useContext(JobsContext);
   /* console.log('favorites', favorites) */
   const itemsPerPage = 4; // Количество элементов на странице
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,9 +34,47 @@ const FavoritesList = () => {
     setActiveLink(link);
   };
 
-  const handleItemClick = (job) => {
-    navigate(`/job/${job.id}`, { state: job });
+  const getCountryCode = (countryName) => {
+    const countryMap = {
+      UK: "gb",
+      "United States": "us",
+      Österreich: "at",
+      Australia: "au",
+      Brasil: "br",
+      België: "be",
+      Canada: "ca",
+      Schweiz: "ch",
+      Deutschland: "de",
+      España: "es",
+      France: "fr",
+      India: "in",
+      Italia: "it",
+      México: "mx",
+      Nederland: "nl",
+      "New Zealand": "nz",
+      Polska: "pl",
+      Singapore: "sg",
+      "South Africa": "za",
+    };
+    return countryMap[countryName] || "us";
   };
+
+  const handleItemClick = (job) => {
+    /* const jobCountry = job.location.area[0].toLowerCase(); */ // Получаем код страны из данных о вакансии
+    const jobCountry = job.location
+      ? getCountryCode(job.location.area[0])
+      : "us";
+    setSelectedJobId(job);
+    navigate(`/job/${jobCountry}/${job.id}`, { state: job });
+
+    /* setSelectedJobId(job);
+    navigate(`/job/${filters.country}/${job.id}`, { state: job }); */
+    /*    navigate(`/job/${job.id}`, { state: job }); */
+  };
+
+  /*   navigate(`/job/${filters.country}/${id}`, { state: selectedJobId }); */
+
+  console.log("job", currentItems);
   return (
     <div>
       {favorites.length > 0 ? (

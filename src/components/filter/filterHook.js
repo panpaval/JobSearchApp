@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { requestIndustryName } from "../services/Superjobservice";
-import { JobsContext } from "../app/App";
+/* import { JobsContext } from "../app/App"; */
 
-export function useFetchIndustries() {
-  const { filters } = useContext(JobsContext);
+export function useFetchIndustries(filters) {
+  /* const { filters } = useContext(JobsContext); */
 
   const [categories, setCategories] = useState([]);
 
