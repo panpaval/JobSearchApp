@@ -48,17 +48,14 @@ const JobDescription = () => {
       </div>
     ); */
   if (error) return <div>{error}</div>;
+
   if (!job && !isLoading)
     return (
-      <>
-        {/*   {" "}
-        <img
-          src={frameImage}
-          alt="Job not found or wrong ID"
-          className="image-centered"
-        /> */}
-        <div>Job not found or wrong ID</div>{" "}
-      </>
+      <div className="description-image">
+        <img src={frameImage} alt="Job not found or wrong ID" />
+
+        <p className="text-spacing">Job not found or wrong ID</p>
+      </div>
     );
 
   return (

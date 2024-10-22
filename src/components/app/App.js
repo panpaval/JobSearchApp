@@ -171,7 +171,7 @@ function App() {
                 path="/job/:country/:id"
                 element={
                   <div className="container favorites">
-                    <div>
+                    <div style={{ margin: "0 auto" }}>
                       <JobDescription />
                     </div>
                   </div>

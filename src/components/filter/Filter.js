@@ -77,7 +77,11 @@ function Filter() {
 
   // Функция валидации зарплаты /* добавлено для обработки неправильной зп в фильтрах */
   const validateSalary = (min, max) => {
-    if (min && max && Number(min) > Number(max)) {
+    if (min > 1000000 || max > 1000000) {
+      setSalaryError("зарплата не может превышать 1000000");
+      return false;
+    }
+    if ((min && max && Number(min) > Number(max)) || max === 0) {
       setSalaryError(
         "Максимальная зарплата должна быть больше минимальной, увеличьте"
       );
