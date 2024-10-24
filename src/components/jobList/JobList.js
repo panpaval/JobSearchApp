@@ -3,7 +3,7 @@ import { Pagination } from "@mantine/core";
 import SkeletonForJobList from "../skeleton/skeleton";
 import Item from "../jobItem/JobItem";
 import "./jobList.css";
-/* import frameImage from "./Frame.svg"; */
+import frameImage from "./Frame.svg";
 import { JobsContext } from "../app/App";
 import { request } from "../services/Superjobservice";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -60,9 +60,6 @@ const JobList = () => {
         setLoadingMore(false);
       }
     };
-
-    /* // Запускаем fetchData при первой загрузке или при изменении URL параметров
-    fetchData(); */
 
     if (data.length === 0) {
       fetchData();
@@ -169,8 +166,63 @@ const JobList = () => {
     }
   };
 
+  const hasNoData =
+    !loadingMore &&
+    (!filteredData || filteredData.length === 0 || data.length === 0);
+
   return (
-    <div onKeyDown={handleKeyDown} tabIndex={0}>
+    <div className="job-list">
+      {loadingMore ? (
+        <SkeletonForJobList />
+      ) : hasNoData ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "60px",
+          }}
+        >
+          <img src={frameImage} alt="No jobs found" />
+          <p
+            style={{
+              marginTop: "20px",
+              fontSize: "16px",
+              color: "#343A40",
+            }}
+          >
+            По вашему запросу ничего не найдено
+          </p>
+        </div>
+      ) : (
+        <>
+          {limitedData.map((item) => (
+            <Item
+              key={item.id}
+              data={item}
+              onClick={() => handleClickToJobDescription(item.id)}
+            />
+          ))}
+
+          <div>
+            <Pagination
+              total={totalPages}
+              value={currentPage}
+              onChange={handlePaginationChange}
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                width: "fit-content",
+                paddingTop: "40px",
+              }}
+            />
+          </div>
+        </>
+      )}
+    </div>
+
+    /*     <div onKeyDown={handleKeyDown} tabIndex={0}>
       <>
         {loadingMore ? (
           <SkeletonForJobList />
@@ -200,7 +252,7 @@ const JobList = () => {
           </>
         )}
       </>
-    </div>
+    </div> */
   );
 };
 
