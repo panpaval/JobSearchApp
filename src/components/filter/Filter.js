@@ -16,6 +16,8 @@ function Filter() {
     keyword,
     setPageForRequest,
     initialFilters,
+    resetForIndustry,
+    setResetForIndustry,
     defaultFilters,
     setFilters,
     firstRequest,
@@ -24,6 +26,7 @@ function Filter() {
   } = useContext(JobsContext);
 
   const [localFilters, setLocalFilters] = useState(filters);
+
   const [salaryError, setSalaryError] =
     useState(""); /* добавлено для обработки неправильной зп в фильтрах */
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -41,6 +44,17 @@ function Filter() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (resetForIndustry) {
+      setLocalFilters((prev) => ({
+        ...prev,
+        industry: "",
+      }));
+      // Сбрасываем триггер
+      setResetForIndustry(false);
+    }
+  }, [resetForIndustry, setResetForIndustry]);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -92,7 +106,46 @@ function Filter() {
   };
 
   const handleSubmit = async () => {
-    /* добавлено для обработки неправильной зп в фильтрах */
+    if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
+      return;
+    }
+
+    setPageForRequest(2);
+
+    let data;
+
+    // Определяем, какой тип запроса будем делать
+    const shouldClearKeyword = localFilters.industry;
+
+    if (shouldClearKeyword) {
+      setKeyword("");
+    }
+
+    if (
+      localFilters.industry ||
+      localFilters.country ||
+      localFilters.salaryMin ||
+      localFilters.salaryMax > 0
+    ) {
+      setLoadingMore(true);
+      try {
+        // Передаем keyword как пустую строку, если есть industry
+        const searchKeyword = shouldClearKeyword ? "" : keyword;
+        data = await request(localFilters, searchKeyword);
+        setData(data.results);
+        setFilters(localFilters);
+        setLoadedPages([]);
+        setCurrentPage(1);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoadingMore(false);
+      }
+    }
+  };
+
+  /*  const handleSubmit = async () => {
+   
     if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
       return;
     }
@@ -125,7 +178,7 @@ function Filter() {
         setLoadingMore(false);
       }
     }
-  };
+  }; */
 
   const handleResetFilters = () => {
     setData(firstRequest);

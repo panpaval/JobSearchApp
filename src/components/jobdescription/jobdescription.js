@@ -26,7 +26,7 @@ const JobDescription = () => {
         setJob(jobData);
       } catch (err) {
         console.error("Error fetching job:", err);
-        setError("Failed to load job details");
+        setError("Ошибка на сервере");
       } finally {
         setIsLoading(false);
       }
@@ -54,7 +54,7 @@ const JobDescription = () => {
       <div className="description-image">
         <img src={frameImage} alt="Job not found or wrong ID" />
 
-        <p className="text-spacing">Job not found or wrong ID</p>
+        <p className="text-spacing">Такой вакансии нет</p>
       </div>
     );
 

@@ -48,8 +48,10 @@ const JobList = () => {
           country: searchParams.get("country") || "us",
         };
 
+        const urlKeyword = searchParams.get("keyword") || "";
+
         // Используем параметры из URL для запроса
-        const response = await request(urlFilters);
+        const response = await request(urlFilters, urlKeyword);
         setPageForRequest(2);
 
         setData(response.results);

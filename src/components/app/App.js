@@ -27,6 +27,7 @@ const defaultFilters = {
 
 function App() {
   const location = useLocation();
+  const [resetForIndustry, setResetForIndustry] = useState(false); //для сброса индустрии в фильтре при запросе через строку поиска
   const [searchParams, setSearchParams] = useSearchParams();
   const initialFilters = {
     industry: searchParams.get("industry") || "",
@@ -41,7 +42,7 @@ function App() {
 
   const [data, setData] = useState([]);
   const [pageForRequest, setPageForRequest] = useState(1);
-  const [keyword, setKeyword] = useState("");
+  /* const [keyword, setKeyword] = useState(""); */
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadedPages, setLoadedPages] = useState([]); // Использоаваные страницы пагинации кратные пяти
@@ -62,7 +63,7 @@ function App() {
   }, [favorites]);
   const [activeLink, setActiveLink] = useState("search"); //для активных ссылок в хедере
   const [isJobDescriptionPage, setIsJobDescriptionPage] = useState(false); //для цвета шрифта названия вакансии внутри JobDescription
-
+  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
   const [filters, setFilters] = useState(() => {
     const savedFilters = sessionStorage.getItem("filters");
     if (savedFilters) {
@@ -89,17 +90,20 @@ function App() {
       Object.entries(filters).forEach(([key, value]) => {
         if (value) params.set(key, value);
       });
+
+      // Добавляем ключевое слово
+      if (keyword) {
+        params.set("keyword", keyword);
+      }
       setSearchParams(params);
     }
-  }, [filters, location.pathname, setSearchParams]);
-
-  const updateFilters = (newFilters) => {
-    setFilters(newFilters);
-  }; //убрать за ненадобностью?
+  }, [filters, location.pathname, setSearchParams, keyword]);
 
   return (
     <JobsContext.Provider
       value={{
+        resetForIndustry,
+        setResetForIndustry,
         isMobileSearchVisible,
         setIsMobileSearchVisible,
         firstRequest,

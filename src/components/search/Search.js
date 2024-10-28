@@ -4,11 +4,14 @@ import { Input, Button } from "@mantine/core";
 import "./search.css";
 import { Search } from "tabler-icons-react";
 import { request } from "../services/Superjobservice";
+import { useSearchParams } from "react-router-dom";
 
 function SearchPanel() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const {
+    filters,
     setData,
     keyword,
     setKeyword,
@@ -16,7 +19,7 @@ function SearchPanel() {
     setLoadingMore,
     setPageForRequest,
     setFilters,
-    initialFilters,
+    setResetForIndustry,
     isMobileSearchVisible, // для мобильного поиска
   } = useContext(JobsContext);
 
@@ -25,13 +28,31 @@ function SearchPanel() {
   };
 
   const handleSearch = async () => {
+    setResetForIndustry(true);
     console.log("keyword", keyword);
-    setFilters(initialFilters);
     setPageForRequest(2);
     setLoadingMore(true);
     let data;
+
+    const newFilters = {
+      ...filters,
+      industry: "", // затираем industry
+    };
+
+    if (filters.industry) {
+      setFilters(newFilters);
+
+      /*  // Обновляем URL
+      const params = new URLSearchParams();
+      Object.entries(newFilters).forEach(([key, value]) => {
+        if (value) params.set(key, value);
+      });
+      setSearchParams(params); */
+    }
+
     if (keyword) {
-      data = await request({}, keyword);
+      // Используем уже созданные newFilters
+      data = await request(newFilters, keyword);
       setData(data.results);
       console.log("data", data);
       setCurrentPage(1);
@@ -39,6 +60,23 @@ function SearchPanel() {
     setLoadingMore(false);
   };
 
+  /*   const handleSearch = async () => {
+    console.log("keyword", keyword);
+    setFilters(initialFilters); 
+    setPageForRequest(2);
+    setLoadingMore(true);
+    let data;
+
+
+    if (keyword) {
+      data = await request(filters, keyword);
+      setData(data.results);
+      console.log("data", data);
+      setCurrentPage(1);
+    }
+    setLoadingMore(false);
+  };
+*/
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
