@@ -46,6 +46,7 @@ const JobList = () => {
             ? Number(searchParams.get("salaryMax"))
             : "",
           country: searchParams.get("country") || "us",
+          region: searchParams.get("region") || "",
         };
 
         const urlKeyword = searchParams.get("keyword") || "";

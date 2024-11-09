@@ -18,22 +18,37 @@ import JobDescription from "../jobdescription/jobdescription.js";
 
 export const JobsContext = React.createContext();
 
+/* const defaultFilters = {
+  industry: "",
+  salaryMin: "",
+  salaryMax: "",
+  country: "us",
+}; */
+
 const defaultFilters = {
   industry: "",
   salaryMin: "",
   salaryMax: "",
   country: "us",
+  region: "", // добавляем регион
 };
 
 function App() {
   const location = useLocation();
   const [resetForIndustry, setResetForIndustry] = useState(false); //для сброса индустрии в фильтре при запросе через строку поиска
   const [searchParams, setSearchParams] = useSearchParams();
+  /*   const initialFilters = {
+    industry: searchParams.get("industry") || "",
+    salaryMin: searchParams.get("salaryMin") || "",
+    salaryMax: searchParams.get("salaryMax") || "",
+    country: searchParams.get("country") || "us",
+  }; */
   const initialFilters = {
     industry: searchParams.get("industry") || "",
     salaryMin: searchParams.get("salaryMin") || "",
     salaryMax: searchParams.get("salaryMax") || "",
     country: searchParams.get("country") || "us",
+    region: searchParams.get("region") || "", // добавляем регион
   };
   console.log("URLfromAPP", searchParams);
   console.log("initialFilters", initialFilters);
@@ -64,7 +79,7 @@ function App() {
   const [activeLink, setActiveLink] = useState("search"); //для активных ссылок в хедере
   const [isJobDescriptionPage, setIsJobDescriptionPage] = useState(false); //для цвета шрифта названия вакансии внутри JobDescription
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-  const [filters, setFilters] = useState(() => {
+  /*   const [filters, setFilters] = useState(() => {
     const savedFilters = sessionStorage.getItem("filters");
     if (savedFilters) {
       return JSON.parse(savedFilters);
@@ -79,7 +94,24 @@ function App() {
       };
     }
   });
+ */
 
+  const [filters, setFilters] = useState(() => {
+    const savedFilters = sessionStorage.getItem("filters");
+    if (savedFilters) {
+      return JSON.parse(savedFilters);
+    } else {
+      const salaryMin = searchParams.get("salaryMin");
+      const salaryMax = searchParams.get("salaryMax");
+      return {
+        industry: searchParams.get("industry") || "",
+        salaryMin: salaryMin ? Number(salaryMin) : "",
+        salaryMax: salaryMax ? Number(salaryMax) : "",
+        country: searchParams.get("country") || "us",
+        region: searchParams.get("region") || "", // добавляем регион
+      };
+    }
+  });
   useEffect(() => {
     sessionStorage.setItem("filters", JSON.stringify(filters));
   }, [filters]);

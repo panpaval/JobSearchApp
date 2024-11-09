@@ -4,6 +4,8 @@ import { Button, Select, NumberInput, Box, Text } from "@mantine/core";
 import "./filter.css";
 import { ChevronDown, ChevronUp } from "tabler-icons-react";
 import { useFetchIndustries } from "./filterHook";
+import { useFetchLocations } from "./locationHook";
+import { getRegionsForCountry } from "./regionData";
 import { request } from "../services/Superjobservice";
 
 function Filter() {
@@ -61,6 +63,18 @@ function Filter() {
   };
 
   const industriesData = useFetchIndustries(localFilters);
+  const regionOptions = getRegionsForCountry(localFilters.country);
+  /*  const locationsData = useFetchLocations(localFilters);
+  const locationOptions = locationsData?.map((item) => ({
+    value: item.location.display_name,
+    label: item.location.display_name,
+  }));
+  console.log("ДАННЫЕ ИЗ ХУКА ЛОКАЦИИ", locationOptions); */
+
+  const options = industriesData?.map((item) => ({
+    value: item.tag,
+    label: item.label,
+  }));
 
   const countryOptions = [
     { value: "gb", label: "United Kingdom" },
@@ -83,11 +97,6 @@ function Filter() {
     { value: "sg", label: "Singapore" },
     { value: "za", label: "South Africa" },
   ];
-
-  const options = industriesData?.map((item) => ({
-    value: item.tag,
-    label: item.label,
-  }));
 
   // Функция валидации зарплаты /* добавлено для обработки неправильной зп в фильтрах */
   const validateSalary = (min, max) => {
@@ -124,6 +133,7 @@ function Filter() {
     if (
       localFilters.industry ||
       localFilters.country ||
+      localFilters.region ||
       localFilters.salaryMin ||
       localFilters.salaryMax > 0
     ) {
@@ -144,32 +154,34 @@ function Filter() {
     }
   };
 
-  /*  const handleSubmit = async () => {
-   
+  /*   const handleSubmit = async () => {
     if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
       return;
     }
-
+  
     setPageForRequest(2);
-
+  
     let data;
-
-    if (localFilters.industry) {
+  
+    const shouldClearKeyword = localFilters.industry;
+  
+    if (shouldClearKeyword) {
       setKeyword("");
-      setCurrentPage(1);
     }
-
+  
     if (
       localFilters.industry ||
       localFilters.country ||
+      localFilters.region ||
       localFilters.salaryMin ||
       localFilters.salaryMax > 0
     ) {
       setLoadingMore(true);
       try {
-        data = await request(localFilters, keyword);
+        const searchKeyword = shouldClearKeyword ? "" : keyword;
+        data = await request(localFilters, searchKeyword);
         setData(data.results);
-        setFilters(localFilters);
+        setFilters(localFilters); // Это вызовет обновление URL через useEffect в App.js
         setLoadedPages([]);
         setCurrentPage(1);
       } catch (error) {
@@ -192,13 +204,41 @@ function Filter() {
     setSelectedJobId(null);
   };
 
+  /*   const handleFilterChange = (field, value) => {
+    
+    if (value < 0) {
+      value = 0;
+    }
+
+    const newFilters = { ...localFilters, [field]: value };
+    setLocalFilters(newFilters);
+
+    if (field === "salaryMin" || field === "salaryMax") {
+      validateSalary(newFilters.salaryMin, newFilters.salaryMax);
+    }
+  }; */
+
   const handleFilterChange = (field, value) => {
     /* добавлено для обработки неправильной зп в фильтрах */
     if (value < 0) {
       value = 0;
     }
 
-    const newFilters = { ...localFilters, [field]: value };
+    let newFilters;
+    if (field === "country") {
+      // При смене страны обнуляем регион
+      newFilters = {
+        ...localFilters,
+        [field]: value,
+        region: "", // обнуляем регион при смене страны
+      };
+    } else {
+      newFilters = {
+        ...localFilters,
+        [field]: value,
+      };
+    }
+
     setLocalFilters(newFilters);
 
     if (field === "salaryMin" || field === "salaryMax") {
@@ -251,6 +291,24 @@ function Filter() {
             onChange={(value) => handleFilterChange("country", value)}
           />
 
+          <h2 className="filter-label">Регион</h2>
+          <Select
+            rightSection={
+              <ChevronDown color={"#ACADB9"} size={30} strokeWidth={1.5} />
+            }
+            styles={{ rightSection: { pointerEvents: "none" } }}
+            size="md"
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 200,
+              timingFunction: "ease",
+            }}
+            data={regionOptions}
+            placeholder="Выберите регион"
+            value={localFilters.region}
+            onChange={(value) => handleFilterChange("region", value)}
+            disabled={!localFilters.country || localFilters.country === "us"}
+          />
           <h2 className="filter-label">Отрасль</h2>
           <Select
             rightSection={

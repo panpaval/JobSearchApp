@@ -1,10 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { requestIndustryName } from "../services/Superjobservice";
-/* import { JobsContext } from "../app/App"; */
 
 export function useFetchIndustries(filters) {
-  /* const { filters } = useContext(JobsContext); */
-
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -21,8 +18,6 @@ export function useFetchIndustries(filters) {
     };
 
     fetchData();
-  }, [filters]); /* 
-  console.log("FilterHook filters", filters);
-  console.log("categories", categories); */
+  }, [filters]);
   return categories || [];
 }
