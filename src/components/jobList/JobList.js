@@ -27,7 +27,6 @@ const JobList = () => {
     pageForRequest,
     setPageForRequest,
     setFirstRequest,
-    selectedJobId,
     setSelectedJobId,
   } = useContext(JobsContext);
 
@@ -69,27 +68,6 @@ const JobList = () => {
     }
   }, []);
 
-  /*   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoadingMore(true);
-        const response = await request();
-        setPageForRequest(2);
-
-        setData(response.results);
-        setFirstRequest(response.results);
-        setLoadingMore(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoadingMore(false);
-      }
-    };
-
-    if (data.length === 0) {
-      fetchData();
-    }
-  }, [data]); */
-
   const filteredData = data.map((item) => {
     const {
       id,
@@ -118,8 +96,6 @@ const JobList = () => {
     };
   });
 
-  console.log("DATA FROM LIST", filteredData);
-
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -130,7 +106,6 @@ const JobList = () => {
     try {
       setLoadingMore(true);
       const response = await request(filters, keyword, pageForRequest);
-      console.log("loadMoreData response", response.results);
 
       setData([...data, ...response.results]);
       setLoadingMore(false);
@@ -146,7 +121,7 @@ const JobList = () => {
     if (page % 5 === 0) {
       setPageForRequest((prev) => prev + 1);
     }
-    console.log("pageForRequest", pageForRequest);
+
     if (page > currentPage && page % 5 === 0 && !loadedPages.includes(page)) {
       loadMoreData();
       setLoadedPages([...loadedPages, page]);
@@ -156,11 +131,12 @@ const JobList = () => {
   const handleClickToJobDescription = (id) => {
     const selectedJob = filteredData.find((item) => item.id === id);
     setSelectedJobId(selectedJob);
-    console.log("selectedJobId", selectedJobId);
+
     navigate(`/job/${filters.country}/${id}`, { state: selectedJob });
   };
 
-  // Управление пагинацией с клавиатуры
+  // Управление пагинацией с клавиатуры, отключил.
+  //Что бы включить - в оборачивающий div передать onKeyDown={handleKeyDown} tabIndex={0}
   const handleKeyDown = (event) => {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       handlePaginationChange(
@@ -224,38 +200,6 @@ const JobList = () => {
         </>
       )}
     </div>
-
-    /*     <div onKeyDown={handleKeyDown} tabIndex={0}>
-      <>
-        {loadingMore ? (
-          <SkeletonForJobList />
-        ) : (
-          <>
-            {limitedData.map((item) => (
-              <Item
-                key={item.id}
-                data={item}
-                onClick={() => handleClickToJobDescription(item.id)}
-              />
-            ))}
-
-            <div>
-              <Pagination
-                total={totalPages}
-                value={currentPage}
-                onChange={handlePaginationChange}
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  width: "fit-content",
-                  paddingTop: "30px",
-                }}
-              />
-            </div>
-          </>
-        )}
-      </>
-    </div> */
   );
 };
 

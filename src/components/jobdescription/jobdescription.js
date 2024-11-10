@@ -41,12 +41,6 @@ const JobDescription = () => {
     navigate("/");
   };
 
-  /*  if (isLoading)
-    return (
-      <div>
-        <SkeletonForJobList />
-      </div>
-    ); */
   if (error) return <div>{error}</div>;
 
   if (!job && !isLoading)

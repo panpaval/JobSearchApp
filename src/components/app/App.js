@@ -18,56 +18,40 @@ import JobDescription from "../jobdescription/jobdescription.js";
 
 export const JobsContext = React.createContext();
 
-/* const defaultFilters = {
-  industry: "",
-  salaryMin: "",
-  salaryMax: "",
-  country: "us",
-}; */
-
 const defaultFilters = {
   industry: "",
   salaryMin: "",
   salaryMax: "",
   country: "us",
-  region: "", // добавляем регион
+  region: "",
 };
 
 function App() {
   const location = useLocation();
   const [resetForIndustry, setResetForIndustry] = useState(false); //для сброса индустрии в фильтре при запросе через строку поиска
   const [searchParams, setSearchParams] = useSearchParams();
-  /*   const initialFilters = {
-    industry: searchParams.get("industry") || "",
-    salaryMin: searchParams.get("salaryMin") || "",
-    salaryMax: searchParams.get("salaryMax") || "",
-    country: searchParams.get("country") || "us",
-  }; */
+
   const initialFilters = {
     industry: searchParams.get("industry") || "",
     salaryMin: searchParams.get("salaryMin") || "",
     salaryMax: searchParams.get("salaryMax") || "",
     country: searchParams.get("country") || "us",
-    region: searchParams.get("region") || "", // добавляем регион
+    region: searchParams.get("region") || "",
   };
-  console.log("URLfromAPP", searchParams);
-  console.log("initialFilters", initialFilters);
 
   const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false); //
 
   const [data, setData] = useState([]);
   const [pageForRequest, setPageForRequest] = useState(1);
-  /* const [keyword, setKeyword] = useState(""); */
+
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadedPages, setLoadedPages] = useState([]); // Использоаваные страницы пагинации кратные пяти
   const [usedPages, setUsedPages] = useState(0); //Использованые станицы для запросов на сервер
 
-  /* const [filters, setFilters] = useState(initialFilters); */
-
   const [firstRequest, setFirstRequest] = useState([]); //первая порция данных по инициализирующему запросу для списка. Используется при клике на "сбросить всё"
   const [selectedJobId, setSelectedJobId] = useState(null); //для JobDescription
-  /* const [favorites, setFavorites] = useState([]); */
+
   const [favorites, setFavorites] = useState(() => {
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -79,22 +63,6 @@ function App() {
   const [activeLink, setActiveLink] = useState("search"); //для активных ссылок в хедере
   const [isJobDescriptionPage, setIsJobDescriptionPage] = useState(false); //для цвета шрифта названия вакансии внутри JobDescription
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-  /*   const [filters, setFilters] = useState(() => {
-    const savedFilters = sessionStorage.getItem("filters");
-    if (savedFilters) {
-      return JSON.parse(savedFilters);
-    } else {
-      const salaryMin = searchParams.get("salaryMin");
-      const salaryMax = searchParams.get("salaryMax");
-      return {
-        industry: searchParams.get("industry") || "",
-        salaryMin: salaryMin ? Number(salaryMin) : "",
-        salaryMax: salaryMax ? Number(salaryMax) : "",
-        country: searchParams.get("country") || "us",
-      };
-    }
-  });
- */
 
   const [filters, setFilters] = useState(() => {
     const savedFilters = sessionStorage.getItem("filters");
@@ -108,7 +76,7 @@ function App() {
         salaryMin: salaryMin ? Number(salaryMin) : "",
         salaryMax: salaryMax ? Number(salaryMax) : "",
         country: searchParams.get("country") || "us",
-        region: searchParams.get("region") || "", // добавляем регион
+        region: searchParams.get("region") || "",
       };
     }
   });
@@ -144,7 +112,6 @@ function App() {
         setFirstRequest,
         filters,
         setFilters,
-        /* setFilters: updateFilters, */ //добавили
         keyword,
         setKeyword,
         loadingMore,
@@ -214,7 +181,6 @@ function App() {
                 }
               />
               <Route path="*" element={<Navigate to="/" replace />} />
-              {/* добавил для исправления бага */}
             </Routes>
           </div>
         </div>

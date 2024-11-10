@@ -1,12 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { JobsContext } from "../app/App";
-import logoImage from "./Logo.svg";
 import { Burger, Drawer, Stack } from "@mantine/core";
 import { Search } from "tabler-icons-react";
 import ReactCountryFlag from "react-country-flag";
@@ -22,7 +16,7 @@ const Header = () => {
   } = useContext(JobsContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+
   const [opened, setOpened] = useState(false);
 
   // Функция для извлечения кода страны из URL
@@ -42,32 +36,6 @@ const Header = () => {
       setActiveLink("favorites");
     }
   }, [location.pathname, setActiveLink]);
-
-  /*   const handleClick = (link) => {
-    setActiveLink(link);
-    setOpened(false);
-  }; */
-  /* 
-  const handleClick = (link) => {
-    setActiveLink(link);
-
-    setOpened(false);
-
-    if (link === "search") {
-      const currentParams = Object.fromEntries([...searchParams]);
-
-      console.log("SearchPARAMS", currentParams);
-
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        ...currentParams,
-      }));
-
-      navigate("/");
-    } else if (link === "favorites") {
-      navigate("/favorites");
-    }
-  }; */
 
   const handleClick = (link) => {
     setActiveLink(link);
@@ -138,7 +106,6 @@ const Header = () => {
         <div className="mobile-search-icon">
           <Search size={24} onClick={handleSearchIconClick} />
         </div>{" "}
-        {/* иконка лупы */}
         <nav className="header-nav desktop-nav">
           <NavLinks />
         </nav>
@@ -167,70 +134,3 @@ const Header = () => {
 };
 
 export default Header;
-
-/* import "./header.css";
-import { useContext, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { JobsContext } from "../app/App";
-import logoImage from "./Logo.svg";
-
-const Header = () => {
-  const { activeLink, setActiveLink } = useContext(JobsContext);
-  const location = useLocation();
-
-  // activeLink изменяется в зависимости от текущего пути, используя useLocation. Это изменение происходит каждый раз при рендере Header
-  // оборачиваем в юзэффект с зависимостью [location.pathname, setActiveLink]
-  useEffect(() => {
-    // Определение активную вкладку на основе текущего пути для смены вкладок при использовании кнопки "назад" в браузере
-    const currentPath = location.pathname;
-    if (currentPath === "/") {
-      setActiveLink("search");
-    } else if (currentPath === "/favorites") {
-      setActiveLink("favorites");
-    }
-  }, [location.pathname, setActiveLink]);
-
-  const handleClick = (link) => {
-    setActiveLink(link);
-  };
-
-  return (
-    <div className="container-header">
-      <header className="header">
-        <div className="header-logo">
-          <Link
-            className="logo-link"
-            to="/"
-            onClick={() => handleClick("search")}
-          >
-            <img src={logoImage} alt="Logo" className="logo-image" />
-            <div className="logo-text">JobForDubel</div>
-          </Link>
-        </div>
-
-        <nav className="header-nav">
-          <Link
-            to="/"
-            className={`header-link ${activeLink === "search" ? "active" : ""}`}
-            onClick={() => handleClick("search")}
-          >
-            Поиск вакансий
-          </Link>
-
-          <Link
-            to="/favorites"
-            className={`header-link ${
-              activeLink === "favorites" ? "active" : ""
-            }`}
-            onClick={() => handleClick("favorites")}
-          >
-            Избранное
-          </Link>
-        </nav>
-      </header>
-    </div>
-  );
-};
-
-export default Header;
- */

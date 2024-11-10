@@ -10,7 +10,6 @@ export function useFetchLocations(filters) {
         const response = await requestLocations(filters);
 
         setLocations(response);
-        console.log("ИЗ ХУКА", locations);
       } catch (error) {
         console.log(error);
         setLocations(null);

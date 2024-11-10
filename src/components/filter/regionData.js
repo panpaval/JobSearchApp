@@ -459,8 +459,3 @@ export const regionsByCountry = {
 export const getRegionsForCountry = (countryCode) => {
   return regionsByCountry[countryCode?.toLowerCase()] || [];
 };
-
-// Вспомогательная функция для проверки наличия регионов для страны
-export const hasRegions = (countryCode) => {
-  return !!regionsByCountry[countryCode?.toLowerCase()];
-};

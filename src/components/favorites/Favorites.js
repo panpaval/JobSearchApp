@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const FavoritesList = () => {
   const { favorites, setActiveLink, setSelectedJobId } =
     useContext(JobsContext);
-  /* console.log('favorites', favorites) */
+
   const itemsPerPage = 4; // Количество элементов на странице
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
@@ -60,21 +60,13 @@ const FavoritesList = () => {
   };
 
   const handleItemClick = (job) => {
-    /* const jobCountry = job.location.area[0].toLowerCase(); */ // Получаем код страны из данных о вакансии
     const jobCountry = job.location
       ? getCountryCode(job.location.area[0])
       : "us";
     setSelectedJobId(job);
     navigate(`/job/${jobCountry}/${job.id}`, { state: job });
-
-    /* setSelectedJobId(job);
-    navigate(`/job/${filters.country}/${job.id}`, { state: job }); */
-    /*    navigate(`/job/${job.id}`, { state: job }); */
   };
 
-  /*   navigate(`/job/${filters.country}/${id}`, { state: selectedJobId }); */
-
-  console.log("job", currentItems);
   return (
     <div>
       {favorites.length > 0 ? (

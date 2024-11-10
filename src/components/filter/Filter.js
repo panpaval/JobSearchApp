@@ -4,7 +4,6 @@ import { Button, Select, NumberInput, Box, Text } from "@mantine/core";
 import "./filter.css";
 import { ChevronDown, ChevronUp } from "tabler-icons-react";
 import { useFetchIndustries } from "./filterHook";
-import { useFetchLocations } from "./locationHook";
 import { getRegionsForCountry } from "./regionData";
 import { request } from "../services/Superjobservice";
 
@@ -17,7 +16,6 @@ function Filter() {
     setLoadingMore,
     keyword,
     setPageForRequest,
-    initialFilters,
     resetForIndustry,
     setResetForIndustry,
     defaultFilters,
@@ -98,7 +96,7 @@ function Filter() {
     { value: "za", label: "South Africa" },
   ];
 
-  // Функция валидации зарплаты /* добавлено для обработки неправильной зп в фильтрах */
+  // Функция валидации зарплаты
   const validateSalary = (min, max) => {
     if (min > 1000000 || max > 1000000) {
       setSalaryError("зарплата не может превышать 1000000");
@@ -139,7 +137,6 @@ function Filter() {
     ) {
       setLoadingMore(true);
       try {
-        // Передаем keyword как пустую строку, если есть industry
         const searchKeyword = shouldClearKeyword ? "" : keyword;
         data = await request(localFilters, searchKeyword);
         setData(data.results);
@@ -154,44 +151,6 @@ function Filter() {
     }
   };
 
-  /*   const handleSubmit = async () => {
-    if (!validateSalary(localFilters.salaryMin, localFilters.salaryMax)) {
-      return;
-    }
-  
-    setPageForRequest(2);
-  
-    let data;
-  
-    const shouldClearKeyword = localFilters.industry;
-  
-    if (shouldClearKeyword) {
-      setKeyword("");
-    }
-  
-    if (
-      localFilters.industry ||
-      localFilters.country ||
-      localFilters.region ||
-      localFilters.salaryMin ||
-      localFilters.salaryMax > 0
-    ) {
-      setLoadingMore(true);
-      try {
-        const searchKeyword = shouldClearKeyword ? "" : keyword;
-        data = await request(localFilters, searchKeyword);
-        setData(data.results);
-        setFilters(localFilters); // Это вызовет обновление URL через useEffect в App.js
-        setLoadedPages([]);
-        setCurrentPage(1);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoadingMore(false);
-      }
-    }
-  }; */
-
   const handleResetFilters = () => {
     setData(firstRequest);
     setFilters(defaultFilters);
@@ -203,20 +162,6 @@ function Filter() {
     setPageForRequest(1);
     setSelectedJobId(null);
   };
-
-  /*   const handleFilterChange = (field, value) => {
-    
-    if (value < 0) {
-      value = 0;
-    }
-
-    const newFilters = { ...localFilters, [field]: value };
-    setLocalFilters(newFilters);
-
-    if (field === "salaryMin" || field === "salaryMax") {
-      validateSalary(newFilters.salaryMin, newFilters.salaryMax);
-    }
-  }; */
 
   const handleFilterChange = (field, value) => {
     /* добавлено для обработки неправильной зп в фильтрах */
@@ -230,7 +175,7 @@ function Filter() {
       newFilters = {
         ...localFilters,
         [field]: value,
-        region: "", // обнуляем регион при смене страны
+        region: "",
       };
     } else {
       newFilters = {
@@ -360,10 +305,7 @@ function Filter() {
             }
             defaultChecked={33333}
             value={localFilters.salaryMin}
-            onChange={(value) =>
-              handleFilterChange("salaryMin", value)
-            } /* добавлено для обработки неправильной зп в фильтрах */
-            /* error={salaryError} */
+            onChange={(value) => handleFilterChange("salaryMin", value)}
           />
           <NumberInput
             size="md"
@@ -396,10 +338,7 @@ function Filter() {
               </div>
             }
             value={localFilters.salaryMax}
-            onChange={(value) =>
-              handleFilterChange("salaryMax", value)
-            } /* добавлено для обработки неправильной зп в фильтрах */
-            /* error={salaryError} */
+            onChange={(value) => handleFilterChange("salaryMax", value)}
           />
           {salaryError && <Text color="red">{salaryError}</Text>}
           {!salaryError && (

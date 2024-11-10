@@ -5,8 +5,6 @@ const baseUrl = "https://api.adzuna.com/v1/api/jobs";
 export async function getJobById(id, params) {
   const country = params?.country || "us";
 
-  console.log("countryForAPI", country);
-
   const url = `${baseUrl}/${country}/search/1?app_id=${appId}&app_key=${apiKey}&what_and=${id}`;
 
   try {
@@ -43,7 +41,7 @@ export async function requestIndustryName(params) {
     console.error("Error fetching data:", error);
   }
 }
-
+//не используем, захардкодили в regionData.js
 export async function requestLocations(params) {
   const country = params?.filters?.country || params?.country || "us";
   const url = `${baseUrl}/${country}/geodata?app_id=${appId}&app_key=${apiKey}`;
