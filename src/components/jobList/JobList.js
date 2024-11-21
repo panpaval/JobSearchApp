@@ -184,7 +184,7 @@ const JobList = () => {
             />
           ))}
 
-          <div>
+          <div className="pagination-container">
             <Pagination
               total={totalPages}
               value={currentPage}

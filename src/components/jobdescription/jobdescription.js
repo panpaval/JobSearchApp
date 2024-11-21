@@ -90,15 +90,17 @@ const JobDescription = () => {
               {job.description}
             </div>
           </div>
-          <Button
-            mt={16}
-            fullWidth
-            type="submit"
-            variant="filled"
-            onClick={handleBackToSearch}
-          >
-            Назад к списку
-          </Button>{" "}
+          <div className="backbotton-container">
+            <Button
+              mt={16}
+              fullWidth
+              type="submit"
+              variant="filled"
+              onClick={handleBackToSearch}
+            >
+              Назад к списку
+            </Button>{" "}
+          </div>
         </>
       )}
     </>

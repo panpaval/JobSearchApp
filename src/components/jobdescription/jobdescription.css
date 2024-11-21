@@ -5,3 +5,9 @@
 .description-image {
   margin-top: 60px;
 }
+@media (max-width: 750px) {
+  .backbotton-container {
+    margin-bottom: 40px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
