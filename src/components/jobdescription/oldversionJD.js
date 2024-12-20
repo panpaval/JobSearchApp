@@ -20,8 +20,6 @@ const JobDescription = () => {
     };
   }, [setIsJobDescriptionPage]);
 
-  console.log("jobbbbb", state);
-
   /*  const handleMouseMove = (e) => {
     setCursorPosition({ x: e.clientX, y: e.clientY })
   }; */
@@ -107,6 +105,6 @@ const JobDescription = () => {
   </div>
   </>
 );
- */
+ 
 
-export default JobDescription;
+export default JobDescription;*/

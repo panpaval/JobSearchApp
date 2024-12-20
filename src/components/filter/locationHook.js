@@ -1,5 +1,7 @@
+//используем жёстко заданный спсиок регионов, апи не всегда корреткно реагирует на запрс
+
 import { useState, useEffect } from "react";
-import { requestLocations } from "../services/Superjobservice";
+import { requestLocations } from "../services/services";
 
 export function useFetchLocations(filters) {
   const [locations, setLocations] = useState([]);

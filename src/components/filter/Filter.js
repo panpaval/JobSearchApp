@@ -5,7 +5,7 @@ import "./filter.css";
 import { ChevronDown, ChevronUp } from "tabler-icons-react";
 import { useFetchIndustries } from "./filterHook";
 import { getRegionsForCountry } from "./regionData";
-import { request } from "../services/Superjobservice";
+import { request } from "../services/services";
 
 function Filter() {
   const {
@@ -62,13 +62,6 @@ function Filter() {
 
   const industriesData = useFetchIndustries(localFilters);
   const regionOptions = getRegionsForCountry(localFilters.country);
-  /*  const locationsData = useFetchLocations(localFilters);
-  const locationOptions = locationsData?.map((item) => ({
-    value: item.location.display_name,
-    label: item.location.display_name,
-  }));
-  console.log("ДАННЫЕ ИЗ ХУКА ЛОКАЦИИ", locationOptions); */
-
   const options = industriesData?.map((item) => ({
     value: item.tag,
     label: item.label,

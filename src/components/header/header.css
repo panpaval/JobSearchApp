@@ -84,7 +84,7 @@
 
 .mobile-search-icon {
   display: none;
-} /* мобильная строка поиска  */
+}
 
 @media (max-width: 1200px) {
   .header {
@@ -100,7 +100,7 @@
   .mobile-search-icon {
     display: block;
     cursor: pointer;
-  } /* мобильная строка поиска */
+  }
 
   .mobile-burger {
     display: block;
@@ -111,13 +111,8 @@
   }
 
   .header {
-    /* flex-direction: column; */
     height: auto;
     padding: 20px 10px;
-  }
-
-  .header-logo {
-    /* margin-bottom: 20px; */
   }
 
   .header-nav {
@@ -129,90 +124,3 @@
     margin-right: 0;
   }
 }
-
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap");
-
-a {
-  text-decoration: none;
-}
-
-.container-header {
-  height: 84px;
-  background: #ffffff;
-}
-
-.header {
-  margin: 0 auto;
-  width: 1440px;
-  display: flex;
-  align-items: center;
-}
-
-.header-logo {
-  color: #232134;
-  padding: 24px 280px 24px 204px;
-  display: inline-block;
-  position: relative;
-}
-
-.logo-text {
-  display: block;
-  width: 99px;
-  height: 36px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
-  color: black;
-}
-
-.header-nav {
-  display: flex;
-}
-
-.header-logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo-image {
-  margin-right: 12px;
-  height: auto;
-}
-
-.logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.header-link {
-  margin-left: 60px;
-  width: 129px;
-  height: 20px;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-  color: #232134;
-}
-
-.header-link:hover {
-  text-decoration: underline;
-}
-
-.active {
-  margin-left: 60px;
-  width: 129px;
-  height: 20px;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-  color: #5e96fc;
-}
- */

@@ -3,7 +3,7 @@ import { JobsContext } from "../app/App";
 import { Input, Button } from "@mantine/core";
 import "./search.css";
 import { Search } from "tabler-icons-react";
-import { request } from "../services/Superjobservice";
+import { request } from "../services/services";
 
 function SearchPanel() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);

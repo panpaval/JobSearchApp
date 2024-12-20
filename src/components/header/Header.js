@@ -81,6 +81,9 @@ const Header = () => {
     </>
   );
 
+  const shouldHideSearchIcon =
+    location.pathname.includes("/job/") || location.pathname === "/favorites";
+
   return (
     <div className="container-header">
       <header className="header">
@@ -103,9 +106,11 @@ const Header = () => {
             <div className="logo-text">JobForDubel</div>
           </Link>
         </div>
-        <div className="mobile-search-icon">
-          <Search size={24} onClick={handleSearchIconClick} />
-        </div>{" "}
+        {!shouldHideSearchIcon && (
+          <div className="mobile-search-icon">
+            <Search size={24} onClick={handleSearchIconClick} />
+          </div>
+        )}{" "}
         <nav className="header-nav desktop-nav">
           <NavLinks />
         </nav>
@@ -120,7 +125,7 @@ const Header = () => {
           onClose={() => setOpened(false)}
           size="100%"
           padding="md"
-          title="Меню"
+          /* title="Меню" */
           className="mobile-drawer"
           position="left"
         >

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Item from "../jobItem/JobItem";
 import "./jobdescription.css";
 import { JobsContext } from "../app/App";
-import { getJobById } from "../services/Superjobservice";
+import { getJobById } from "../services/services";
 import { Button } from "@mantine/core";
 import SkeletonForJobList from "../skeleton/skeleton";
 import frameImage from "./Frame.svg";

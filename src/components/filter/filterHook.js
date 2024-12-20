@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { requestIndustryName } from "../services/Superjobservice";
+import { requestIndustryName } from "../services/services";
 
 export function useFetchIndustries(filters) {
   const [categories, setCategories] = useState([]);

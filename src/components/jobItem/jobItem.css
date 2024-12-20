@@ -4,10 +4,6 @@
   cursor: pointer;
 }
 
-/* .activeStar .icon-tabler-star{
-    fill: #5E96FC;
-}  */
-
 .star .star-icon {
   stroke: #acadb9;
   fill: transparent;

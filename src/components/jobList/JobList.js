@@ -5,7 +5,7 @@ import Item from "../jobItem/JobItem";
 import "./jobList.css";
 import frameImage from "./Frame.svg";
 import { JobsContext } from "../app/App";
-import { request } from "../services/Superjobservice";
+import { request } from "../services/services";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const JobList = () => {
